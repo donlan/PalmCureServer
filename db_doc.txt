@@ -1,0 +1,45 @@
+用户表：
+CREATE TABLE `rsl`.`user` ( `id` VARCHAR(48) NOT NULL , `username` VARCHAR(24) NOT NULL , `password` CHAR(24) NOT NULL , `nickname` CHAR(24) NOT NULL , `phone` CHAR(11) NOT NULL , `sex` TINYINT NOT NULL DEFAULT '-1' , `type` TINYINT NOT NULL DEFAULT '0' , `verify` TINYINT NOT NULL DEFAULT '-1' , `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE = InnoDB;
+
+ALTER TABLE `user` ADD PRIMARY KEY(`id`);
+
+ALTER TABLE `user` ADD `no` CHAR(24) NOT NULL AFTER `updatedAt`;
+
+契约表：
+CREATE TABLE `rsl`.`contract` ( `id` CHAR(24) NOT NULL , `doctor` CHAR(24) NOT NULL , `patient` CHAR(24) NOT NULL , `status` TINYINT NOT NULL DEFAULT '-1' , `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE = InnoDB;
+
+ALTER TABLE `contract` ADD INDEX(`doctor`);
+
+ALTER TABLE `contract` ADD CONSTRAINT `doctor` FOREIGN KEY (`doctor`) REFERENCES `rsl`.`user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `contract` ADD INDEX(`patient`);
+
+ALTER TABLE `contract` ADD CONSTRAINT `patient` FOREIGN KEY (`patient`) REFERENCES `rsl`.`user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+预约表：
+CREATE TABLE `rsl`.`appointment` ( `id` CHAR(24) NOT NULL , `doctor` CHAR(24) NOT NULL , `patient` CHAR(24) NOT NULL , `reason` VARCHAR(200) NOT NULL , `booktime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `createdAt` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP , `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`(24))) ENGINE = InnoDB;
+
+ALTER TABLE `appointment` ADD INDEX(`doctor`);
+
+ALTER TABLE `appointment` ADD INDEX(`patient`);
+
+ALTER TABLE `appointment` ADD CONSTRAINT `a_doctor` FOREIGN KEY (`doctor`) REFERENCES `rsl`.`user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `appointment` ADD CONSTRAINT `a_patient` FOREIGN KEY (`patient`) REFERENCES `rsl`.`user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+问卷表：
+
+CREATE TABLE `rsl`.`questionnaire` ( `id` CHAR(24) NOT NULL , `doctor` CHAR(24) NOT NULL , `patient` CHAR(24) NOT NULL , `status` TINYINT NOT NULL DEFAULT '-1' , `level` INT NOT NULL DEFAULT '-1' , `result` VARCHAR(400) NOT NULL , `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`), INDEX `q_doctor` (`doctor`), INDEX `q_patient` (`patient`)) ENGINE = InnoDB;
+
+ALTER TABLE `questionnaire` ADD CONSTRAINT `q_doctor` FOREIGN KEY (`doctor`) REFERENCES `rsl`.`user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `questionnaire` ADD CONSTRAINT `q_patient` FOREIGN KEY (`patient`) REFERENCES `rsl`.`user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+问题表：
+CREATE TABLE `rsl`.`question` ( `id` CHAR(24) NOT NULL , `type` TINYINT NOT NULL DEFAULT '0' , `describe` VARCHAR(200) NOT NULL , `key` VARCHAR(20) NOT NULL , `answer` VARCHAR(200) NOT NULL , `creator` CHAR(24) NOT NULL , `score` INT NOT NULL DEFAULT '0' , `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`), INDEX `i_creator` (`creator`)) ENGINE = InnoDB;
+
+
+问卷问题：
+CREATE TABLE `rsl`.`record` ( `id` CHAR(24) NOT NULL , `questionnaire` CHAR(24) NOT NULL , `question` CHAR(24) NOT NULL , `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`), INDEX `r_quest` (`questionnaire`), INDEX `r_question` (`question`)) ENGINE = InnoDB;
+
+ALTER TABLE `record` ADD CONSTRAINT `r_qst` FOREIGN KEY (`questionnaire`) REFERENCES `rsl`.`questionnaire`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `record` ADD CONSTRAINT `r_question` FOREIGN KEY (`question`) REFERENCES `rsl`.`question`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+医院信息：
+CREATE TABLE `rsl`.`hospital` ( `id` CHAR(24) NOT NULL , `address` VARCHAR(100) NOT NULL , `tel` VARCHAR(12) NOT NULL , `level` TINYINT NOT NULL , `intro` VARCHAR(1000) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
