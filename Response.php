@@ -10,8 +10,9 @@ class Response
             throw new Exception("error code");
         $res = array(
             'code' => $code,
-            'data' => json_encode($msg)
+            'data' => json_encode($msg,JSON_UNESCAPED_UNICODE)
         );
-        return json_encode($res);
+        return json_encode($res,JSON_UNESCAPED_UNICODE);
     }
+
 }
