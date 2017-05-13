@@ -9,23 +9,26 @@
 require_once "../../Response.php";
 require_once "../../MySQLConnector.php";
 require_once "../../model/Question.php";
+require_once "../../model/Config.php";
 $doctor = @$_POST["doctor"];
 $patient = @$_POST["patient"];
-$question = @$_POST["question"];
+$question = @$_POST["questions"];
 $intro = @$_POST["intro"];
+$level = @$_POST["level"];
 try {
 
     if (!is_null($doctor) || !is_null($patient)) {
 
         $questionObj = json_decode($question);
-        $id = sha1(time() . $doctor . $patient);
+        $id = sha1(time().$doctor.$patient);
+        var_dump($questionObj);
         if (is_array($questionObj)) {
 
             $conn = MySQLConnector::connect();
 
-            $sql = "INSERT INTO rsl.questionnaire(id,doctor,patient,intro) VALUES (?,?,?,?)";
+            $sql = "INSERT INTO rsl.questionnaire(id,doctor,patient,intro,status,level) VALUES (?,?,?,?,?,?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param($id, $doctor, $patient, $intro);
+            $stmt->bind_param("ssssii",$id, $doctor, $patient, $intro,Config::STATUS_QN_NEW(),$level);
             $stmt->execute();
 
 
@@ -36,7 +39,7 @@ try {
             for ($i = 0; $i < $count; $i++) {
                 var_dump($questionObj[$i]);
                 $rid = sha1(time() . $id);
-                $stmt->bind_param($rid, $id, $questionObj[$i]);
+                $stmt->bind_param("sss",$rid, $id, $questionObj[$i]);
                 $stmt->execute();
             }
             $stmt->close();

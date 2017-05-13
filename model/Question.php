@@ -18,17 +18,30 @@ class Question
     var $score;
     var $createdAt;
 
-    public function __construct($row)
+    public function __construct($row,$i)
     {
-        $this->id = $row[0];
-        $this->type = $row[1];
-        $this->qdescribe = $row[2];
-        $this->qkey = $row[3];
-        $this->options = $row[4];
-        $this->answer = $row[5];
-        $this->creator = $row[6];
-        $this->score = $row[7];
-        $this->createdAt = $row[8];
+        if(is_numeric($i)){
+            $this->id = $row[$i++];
+            $this->type = $row[$i++];
+            $this->qdescribe = $row[$i++];
+            $this->qkey = json_decode($row[$i++]);
+            $this->options = json_decode($row[$i++]);
+            $this->answer = $row[$i++];
+            $this->creator = $row[$i++];
+            $this->score = $row[$i++];
+            $this->createdAt = $row[$i++];
+        }else{
+            $this->id = $row[0];
+            $this->type = $row[1];
+            $this->qdescribe = $row[2];
+            $this->qkey = json_decode($row[3]);
+            $this->options = json_decode($row[4]);
+            $this->answer = $row[5];
+            $this->creator = $row[6];
+            $this->score = $row[7];
+            $this->createdAt = $row[8];
+        }
+
     }
 
 

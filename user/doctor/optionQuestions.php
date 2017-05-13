@@ -9,6 +9,7 @@
 require_once "../../Response.php";
 require_once "../../MySQLConnector.php";
 require_once "../../model/Question.php";
+require_once "../../model/Config.php";
 $uid = @$_GET["uid"];
 try{
     $conn = MySQLConnector::connect();
@@ -17,7 +18,7 @@ try{
     if($res->num_rows >0){
         $data = array();
         while ($row = $res->fetch_row()){
-            array_push($data,new Question($row));
+            array_push($data,new Question($row,""));
         }
         echo Response::json(0,$data);
     }else{

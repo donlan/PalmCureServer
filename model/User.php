@@ -18,7 +18,7 @@ class User
 
     public function __construct($row,$i)
     {
-        if($i){
+        if(is_int($i)){
             $this->id = $row[$i++];
             $this->username = $row[$i++];
             $this->password = "";
