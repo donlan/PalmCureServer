@@ -20,14 +20,14 @@ class Contract
 
     /**
      * Contract constructor.
-     * @param $row
+     * @param $row 构造函数：根据MySql查询结果，传入一行查询结果
      * @internal param $id
-     * @internal param $doctor
-     * @internal param $patient
-     * @internal param $status
-     * @internal param $createdAt
-     * @internal param $updatedAt
-     * @internal param $user
+     * @internal param $doctor 医生id
+     * @internal param $patient 患者id
+     * @internal param $status 状态码
+     * @internal param $createdAt 创建时间
+     * @internal param $updatedAt 更新时间
+     * @internal param $user 请求绑定的用户信息
      */
     public function __construct($row)
     {

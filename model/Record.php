@@ -1,25 +1,23 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: doogo
- * Date: 2017/5/13
- * Time: 12:59
+ *一个问卷中，一个问题就对应的一个记录信息
  */
 require_once "Question.php";
 
 class Record
 {
-    var $id;
-    var $questionnaire;
-    var $question;
-    var $answer;
-    var $score;
-    var $createdAt;
-    var $questionObj;
+    var $id;   //唯一id
+    var $questionnaire; //问卷id
+    var $question; //问题id
+    var $answer; //患者填写的答案
+    var $score; //得分
+    var $createdAt; //创建时间
+    var $questionObj; //更新时间
 
     /**
      * Record constructor.
+     * @param $row 查询得到的一行结果
      */
     public function __construct($row)
     {

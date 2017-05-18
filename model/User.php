@@ -5,19 +5,20 @@
  */
 class User
 {
-    var $id;
-    var $username;
-    var $password;
-    var $nickname;
-    var $phone;
-    var $sex;
-    var $type;
-    var $verify;
-    var $updatedAt;
+    var $id;   //唯一id
+    var $username; //用户名
+    var $password; //密码
+    var $nickname; //昵称
+    var $phone; //手机号码
+    var $sex; //性别
+    var $type; //用户类型  医生或者患者
+    var $verify; //是否是认证用户
+    var $updatedAt; //更新时间
 
 
     public function __construct($row,$i)
     {
+        //可能是连表查询，那么用户信息的开始索引不唯一，由外部传入
         if(is_int($i)){
             $this->id = $row[$i++];
             $this->username = $row[$i++];

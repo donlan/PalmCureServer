@@ -1,5 +1,6 @@
 <?php
 /**
+ * 医生身份认证
  */
 
 require_once "../../Response.php";
@@ -8,14 +9,15 @@ require_once "../../model/User.php";
 require_once "VerifyTools.php";
 
 
-$uid = @$_POST["uid"];
-$idcard = @$_POST["idcard"];
+$uid = @$_POST["uid"]; //医生id
+$idcard = @$_POST["idcard"]; //身份证
 try {
     $conn = MySQLConnector::connect();
-    if (is_null($uid)) {
+    if (is_null($uid)) { //判断id是否为空
         echo Response::json(-1, "无效参数");
     } else {
-        if (VerifyTools::verifyIdCard($idcard)) {
+        if (VerifyTools::verifyIdCard($idcard)) { //验证身份证信息是否匹配
+            //匹配就更新用户的verify字段为1,说明已经认证
             $sql = "UPDATE  rsl.user SET verify = 1 WHERE id ='" . $uid . "';";
             if ($conn->query($sql)) {
                 echo Response::json(0, "验证成功");
