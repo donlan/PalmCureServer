@@ -22,11 +22,11 @@ try{
 				$conn->query($sql);
 			}
 			//更新问卷的状态 2：问卷问答完毕
-            $sql ="update rsl.questionnaire set status=2 where id='".$qn->id."';";
+            $sql ="update rsl.questionnaire set status='".$qn->status."' where id='".$qn->id."';";
             $conn->query($sql);
 		}else{
 		    //不包含问题列表数组，那么只更新问卷的状态， 1：等待患者答题
-			$sql ="update rsl.questionnaire set status=1,result='".$qn->result."' where id='".$qn->id."';";
+			$sql ="update rsl.questionnaire set status='".$qn->status."',result='".$qn->result."' where id='".$qn->id."';";
 			$conn->query($sql);
 			
 		}
